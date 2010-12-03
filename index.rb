@@ -11,9 +11,9 @@ end
 helpers do
   def is_it_shabbos_yet
     @shabbos = get_shabbos(11211)
-    @is_it = "Nope"
-#    @today = Date.today
-    @today = @shabbos + 1
+    @today = DateTime.now
+    @is_it = "Nope shbbos: "+ @shabbos.to_s + " and now it's: " + @today.to_s
+#    @today = @shabbos + 1
     if @today > @shabbos
       @is_it = "Yep"
     end
