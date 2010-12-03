@@ -12,10 +12,11 @@ helpers do
   def is_it_shabbos_yet
     @shabbos = get_shabbos(11211)
     @today = DateTime.now
-    @is_it = "Nope shbbos: "+ @shabbos.to_s + " and now it's: " + @today.to_s
+#    @is_it = "Nope shabbos: "+ @shabbos.to_s + " and now it's: " + @today.to_s
+    @is_it = "Nope" 
 #    @today = @shabbos + 1
     if @today > @shabbos
-      @is_it = "Yep"
+      @is_it = "Yep. Shabbos started at " + @shabbos.hour.modulo(12).to_s + ":" + @shabbos.min.to_s + " pm"
     end
     haml :index    
   end 
