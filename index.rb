@@ -10,13 +10,14 @@ end
 
 helpers do
   def is_it_shabbos_yet
-    @shabbos = get_shabbos(11211)
+    @shabbos_event = get_shabbos(11211)
+    @shabbos_start = @shabbos_event.first.events.first.dtstart
+    @shabbos_end = @shabbos_event.first.events.first.dtend
     @today = DateTime.now
 #    @is_it = "Nope shabbos: "+ @shabbos.to_s + " and now it's: " + @today.to_s
-    @is_it = "Nope" 
-#    @today = @shabbos + 1
-    if @today > @shabbos
-      @is_it = "Yep. Shabbos started at " + @shabbos.hour.modulo(12).to_s + ":" + @shabbos.min.to_s + " pm"
+    @is_it = "Nope. Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " in Williamsburg, Brooklyn"
+    if @today > @shabbos_start && @today < @shabbos_end
+      @is_it = "Yep. Shabbos started at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos.min.to_s + " pm on Friday and ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " in Williamsburg, Brooklyn"
     end
     haml :index    
   end 
@@ -26,7 +27,7 @@ helpers do
     shabbos_ical = Net::HTTP.get(shabbos_ical_url)
     shabbos_ical.slice!(/CHARSET:utf-8\r\n/)
     shabbos_ical = Icalendar.parse(shabbos_ical)
-    shabbos = shabbos_ical.first.events.first.dtstart
+#    shabbos = shabbos_ical.first.events.first.dtstart
   end
 
 end
