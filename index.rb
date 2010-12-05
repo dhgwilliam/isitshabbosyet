@@ -14,18 +14,24 @@ helpers do
     @shabbos_start = @shabbos_event.first.events.first.dtstart
     @shabbos_end = @shabbos_event.first.events.first.dtend
     @today = DateTime.now
+#    @today = DateTime.now + 6
     @location = "Williamsburg, Brooklyn"
 
     if @today.cwday == 5 && @today > @shabbos_start
-      @is_it = "Yep. Shabbos started at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s + " pm on Friday and ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " tomorrow in " + @location
+      @is_it = "Yep."
+      @why = "Shabbos started at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s + " pm on Friday and ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " tomorrow in " + @location
     elsif @today.cwday == 5 && @today < @shabbos_start
-      @is_it = "Not yet. Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos.min.to_s + " pm in " + @location
+      @is_it = "Not yet."
+      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos.min.to_s + " pm in " + @location
     elsif @today.cwday == 6 && @today < @shabbos_end
-      @is_it = "Yep. Shabbos ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
+      @is_it = "Yep."
+      @why = "Shabbos ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
     elsif @today.cwday == 6 && @today > @shabbos_end
-      @is_it = "Nope. Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
+      @is_it = "Nope."
+      @why = "Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
     else
       @is_it = "Nope."
+      @why = ""
     end
     haml :index    
   end 
