@@ -1,8 +1,12 @@
-require 'sinatra'
 require 'date'
 require 'icalendar'
 require 'net/https'
 require 'json'
+
+before do 
+  # Strip the last / from the path
+  request.env['PATH_INFO'].gsub!(/\/$/, '')
+end
 
 get '/' do
   haml :index    
@@ -40,7 +44,8 @@ helpers do
       @why = "Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s.rjust(2, '0') + " pm in " + @location
     else
       @is_it = "Nope."
-      @why = ""
+      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s.rjust(2, '0') + " pm this Friday in " + @location
+      #@why = ""
     end
   end 
 
