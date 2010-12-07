@@ -29,19 +29,19 @@ helpers do
 
     if @today.cwday == 5 && @today > @shabbos_start
       @is_it = "Yep."
-      @why = "Shabbos started at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s + " pm on Friday and ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " tomorrow in " + @location
+      @why = "Shabbos started at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s.rjust(2, '0') + " pm on Friday and ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s.rjust(2, '0') + " tomorrow in " + @location
     elsif @today.cwday == 5 && @today < @shabbos_start
       @is_it = "Not yet."
-      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s + " pm in " + @location
+      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s.rjust(2, '0') + " pm in " + @location
     elsif @today.cwday == 6 && @today < @shabbos_end
       @is_it = "Yep."
-      @why = "Shabbos ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
+      @why = "Shabbos ends at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s.rjust(2, '0') + " pm in " + @location
     elsif @today.cwday == 6 && @today > @shabbos_end
       @is_it = "Nope."
-      @why = "Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s + " pm in " + @location
+      @why = "Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s.rjust(2, '0') + " pm in " + @location
     else
       @is_it = "Nope."
-      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s + " pm in " + @location
+      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s.rjust(2, '0') + " pm in " + @location
 #      @why = ""
     end
   end 

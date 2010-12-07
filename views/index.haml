@@ -11,13 +11,17 @@
       %h2
         = @why
     %div.myForm
+      Enter your zipcode:
       %form{:method => "get", :action => "javascript:jQuery.noop();"}
-        %input{:name => "zipcode"}
-        %input{:type => "submit"}
+        %input{:name => "zipcode", :value => "11211"}
+        %input{:type => "submit", :value => "Go"}
+    :javascript
+      $("input:first").focus(function () { $(this).attr('value', ''); });
     :javascript
       $("form").submit(function() { 
         $.getJSON('/zipcode/' + $("input:first").val(), function(data) {
           $("h1").text(data.h1).load();
           $("h2").text(data.h2).load();
+          $("input:first").attr('value', data.zipcode).load();
         });
       });
