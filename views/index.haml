@@ -22,6 +22,5 @@
         $.getJSON('/zipcode/' + $("input:first").val(), function(data) {
           $("h1").text(data.h1).load();
           $("h2").text(data.h2).load();
-          $("input:first").attr('value', data.zipcode).load();
         });
       });

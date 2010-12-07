@@ -5,7 +5,6 @@ require 'net/https'
 require 'json'
 
 get '/' do
-  is_it_shabbos_yet(get_shabbos(11211))
   haml :index    
 end
 
@@ -41,8 +40,7 @@ helpers do
       @why = "Shabbos ended at " + @shabbos_end.hour.modulo(12).to_s + ":" + @shabbos_end.min.to_s.rjust(2, '0') + " pm in " + @location
     else
       @is_it = "Nope."
-      @why = "Shabbos starts at " + @shabbos_start.hour.modulo(12).to_s + ":" + @shabbos_start.min.to_s.rjust(2, '0') + " pm in " + @location
-#      @why = ""
+      @why = ""
     end
   end 
 
