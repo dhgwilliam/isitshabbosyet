@@ -6,8 +6,7 @@
       $(document).ready(function() { $.getJSON('/zipcode/11211', function(data) { $("h1").text(data.h1).load(); $("h2").text(data.h2).load(); }); });
   %body
     %results
-      %h1
-        = @is_it
+      %h1 Loading...
       %h2
         = @why
     %div.myForm
