@@ -1,6 +1,8 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    geonames (0.2.2)
+    haml (3.0.25)
     icalendar (1.1.5)
     rack (1.2.1)
     sinatra (1.2.0)
@@ -12,5 +14,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  geonames
+  haml
   icalendar
   sinatra

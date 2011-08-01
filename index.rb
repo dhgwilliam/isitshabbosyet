@@ -2,6 +2,7 @@ require 'date'
 require 'icalendar'
 require 'net/https'
 require 'json'
+require 'geonames'
 
 before do 
   # Strip the last / from the path
@@ -15,7 +16,7 @@ end
 get '/zipcode/:zipcode' do
   content_type :json
   is_it_shabbos_yet(get_shabbos(params[:zipcode]))
-  { :h1 => @is_it, :h2 => @why, :zipcode => params[:zipcode] }.to_json
+  { :h1 => @is_it, :h2 => @why, :zipcode => params[:zipcode], :debug => @today, :end => @shabbos_end }.to_json
 end
 
 get '/style.css' do
@@ -26,8 +27,9 @@ helpers do
   def is_it_shabbos_yet(shabbos_ical_parsed)
     @shabbos_event = shabbos_ical_parsed
     @shabbos_start = @shabbos_event.first.events.first.dtstart
-    @shabbos_end = @shabbos_event.first.events.first.dtend
+    @shabbos_end = @shabbos_event.first.events.last.dtstart
     @today = DateTime.now
+    @timezone = Geonames::WebService.timezone
     @location = params[:zipcode].to_s
 
     if @today.cwday == 5 && @today > @shabbos_start
