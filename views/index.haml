@@ -3,7 +3,7 @@
     %title Is It Shabbos Yet?
     %script{:type => "text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"}
     :javascript
-      $(document).ready(function() { $.getJSON('/zipcode/11211', function(data) { $("h1").text(data.h1).load(); $("h2").text(data.h2).load(); $(".debug").text(data.debug).load(); $(".end").text(data.end).load(); }); });
+      $(document).ready(function() { $.getJSON('/zipcode/11211', function(data) { $("h1").text(data.h1).load(); $("h2").text(data.h2).load(); }); });
   %body
     %results
       %h1 Loading...
@@ -14,10 +14,6 @@
       %form{:method => "get", :action => "javascript:jQuery.noop();"}
         %input{:name => "zipcode", :value => "11211"}
         %input{:type => "submit", :value => "Go"}
-    %div.debug
-      %p Today
-    %div.end
-      %p End_Time
     :javascript
       $("input:first").focus(function () { $(this).attr('value', ''); });
     :javascript
@@ -25,7 +21,5 @@
         $.getJSON('/zipcode/' + $("input:first").val(), function(data) {
           $("h1").text(data.h1).load();
           $("h2").text(data.h2).load();
-          $(".debug").text(data.debug).load(); 
-          $(".end").text(data.end).load(); 
         });
       });
