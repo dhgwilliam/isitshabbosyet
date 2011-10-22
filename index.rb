@@ -39,8 +39,8 @@ get '/style.css' do
 end
 
 helpers do
-  def is_it_shabbos_yet(shabbos_ical_parsed)
-    @shabbos_event = shabbos_ical_parsed
+  def is_it_shabbos_yet(shabbos_hebcal)
+    @shabbos_event = shabbos_hebcal
     @shabbos_start = @shabbos_event[0]
     @shabbos_end = @shabbos_event[1]
     @today = DateTime.now
@@ -77,7 +77,7 @@ helpers do
     date_array = Array.new
     hebcal_url = URI.parse('http://www.hebcal.com/hebcal/?v=1;cfg=json;year=' + today.year.to_s + ';month=' + today.month.to_s + ';c=on;zip=' + zipcode.to_s + '')
     hebcal_json = JSON.parse(Net::HTTP.get(hebcal_url))["items"]
-    hebcal_json.each{ |x| date = x.fetch("date"); if Date.parse(date).yday >= today.yday then date_array.push(x) end }
+    hebcal_json.each{ |x| date = x.fetch("date"); if Date.parse(date).yday >= today.yday - 1 then date_array.push(x) end }
     return [ DateTime.parse(date_array[0].fetch("date")), DateTime.parse(date_array[1].fetch("date"))]
   end
 
