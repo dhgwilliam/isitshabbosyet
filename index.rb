@@ -34,6 +34,13 @@ get '/hebcal/:zipcode' do
   get_shabbos_hebcal(params[:zipcode])
 end
 
+get '/sms' do
+  content_type 'text/xml'
+  @body = params[:Body].slice(0..4)
+  is_it_shabbos_yet(get_shabbos_hebcal(@body))
+  haml :sms
+end
+
 get '/style.css' do
   sass :style.css
 end
