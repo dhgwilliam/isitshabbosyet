@@ -1,5 +1,4 @@
 require 'date'
-require 'icalendar'
 require 'net/https'
 require 'json'
 
@@ -12,13 +11,6 @@ get '/' do
   haml :index    
 end
 
-get '/latest_tweet' do
-  content_type :json
-  tweet_uri = URI.parse('http://search.twitter.com/search.json?q=from:dhgwilliam&page=1&rpp=1')
-  tweet_json = Net::HTTP.get(tweet_uri)
-  tweet_json = JSON.parse(tweet_json)
-end
-
 get '/zipcode/:zipcode' do
   content_type :json
   is_it_shabbos_yet(get_shabbos_hebcal(params[:zipcode]))
@@ -27,7 +19,7 @@ end
 
 get '/parse/:zipcode' do
   content_type :json
-  { :ics => get_shabbos(params[:zipcode]).inspect }.to_json
+  { :ics => get_shabbos_hebcal(params[:zipcode]).inspect }.to_json
 end
 
 get '/hebcal/:zipcode' do
@@ -72,20 +64,33 @@ helpers do
     end
   end 
 
-  def get_shabbos(zipcode)
-    shabbos_ical_url = URI.parse('http://www.chabad.org/calendar/candlelighting/candlelighting.ics_cdo/z/' + zipcode.to_s + '/weeks/')
-    shabbos_ical = Net::HTTP.get(shabbos_ical_url)
-    shabbos_ical.slice!(/CHARSET:utf-8\r\n/)
-    shabbos_ical = Icalendar.parse(shabbos_ical)
-  end
-
   def get_shabbos_hebcal(zipcode)
     today = DateTime.now
     date_array = Array.new
     hebcal_url = URI.parse('http://www.hebcal.com/hebcal/?v=1;cfg=json;year=' + today.year.to_s + ';month=' + today.month.to_s + ';c=on;zip=' + zipcode.to_s + '')
     hebcal_json = JSON.parse(Net::HTTP.get(hebcal_url))["items"]
     hebcal_json.each{ |x| date = x.fetch("date"); if Date.parse(date).yday >= today.yday - 1 then date_array.push(x) end }
+    if date_array.count <= 1
+      next_month = next_my
+      hebcal_url = URI.parse('http://www.hebcal.com/hebcal/?v=1;cfg=json;year=' + next_month[0].to_s + ';month=' + next_month[1].to_s + ';c=on;zip=' + zipcode.to_s + '')
+      hebcal_json = JSON.parse(Net::HTTP.get(hebcal_url))["items"]
+      date_array = Array.new
+      hebcal_json.each{ |x| date = x.fetch("date"); if Date.parse(date).yday >= today.yday - 1 then date_array.push(x) end }
+    end
     return [ DateTime.parse(date_array[0].fetch("date")), DateTime.parse(date_array[1].fetch("date"))]
   end
+
+  def next_my()
+    today = DateTime.now
+    if today.month == 12
+      next_month = 1
+      next_year = today.year + 1
+    elsif
+      next_month = today.month + 1
+    next_year = today.year
+    end
+    return [next_year, next_month]
+  end
+      
 
 end
